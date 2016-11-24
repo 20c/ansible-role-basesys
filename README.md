@@ -10,8 +10,8 @@ An Ansible role for managing base system configuration
 ## Role Variables
 
 ```yml
-# set to false to disable timezone management
-basesys_timezone: "{{ timezone | d(False) }}"
+# set to a valid timezone to use
+basesys_timezone: false
 
 
 #basesys_ntp_servers: []
