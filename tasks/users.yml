@@ -1,0 +1,18 @@
+
+- block:
+
+  - name: include users tasks
+    include: "{{ basesys_user_include }}"
+    with_first_found:
+      - "users/{{ ansible_os_family }}.yml"
+      - "users/{{ ansible_system }}.yml"
+      - "users/default.yml"
+    loop_control:
+      loop_var: basesys_user_include
+
+  when:
+    - basesys_users != false
+    - basesys_users != None
+  tags:
+    - basesys
+    - basesys_users

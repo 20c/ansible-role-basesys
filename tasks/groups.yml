@@ -1,0 +1,18 @@
+
+- block:
+
+  - name: include groups tasks
+    include: "{{ basesys_groups_include }}"
+    with_first_found:
+      - "groups/{{ ansible_os_family }}.yml"
+      - "groups/{{ ansible_system }}.yml"
+      - "groups/default.yml"
+    loop_control:
+      loop_var: basesys_groups_include
+
+  when:
+    - basesys_groups != false
+    - basesys_groups != None
+  tags:
+    - basesys
+    - basesys_groups

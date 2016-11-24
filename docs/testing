@@ -1,0 +1,3 @@
+
+testinfra tests/ --debug --connection=docker
+

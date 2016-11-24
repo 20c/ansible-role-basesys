@@ -1,0 +1,18 @@
+
+- block:
+
+  - name: include ssh tasks
+    include: "{{ basesys_ssh_include }}"
+    with_first_found:
+      - "ssh/{{ ansible_os_family }}.yml"
+      - "ssh/{{ ansible_system }}.yml"
+      - "ssh/default.yml"
+    loop_control:
+      loop_var: basesys_ssh_include
+
+  when:
+    - basesys_ssh != false
+    - basesys_ssh != None
+  tags:
+    - basesys
+    - basesys_ssh

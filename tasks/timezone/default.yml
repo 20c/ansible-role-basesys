@@ -1,0 +1,16 @@
+
+- block:
+  - name: check timezone validity
+    stat: path="/usr/share/zoneinfo/{{basesys_timezone}}"
+    register: st
+    failed_when: not st.stat.exists or st.stat.isdir
+
+  - name: set timezone
+    file: src="/usr/share/zoneinfo/{{basesys_timezone}}"
+      dest=/etc/localtime
+      state=link
+      force=yes
+
+  when:
+    - basesys_timezone != false
+    - basesys_timezone != None

@@ -1,0 +1,41 @@
+
+- block:
+
+  - name: build group index
+    set_fact:
+      basesys_group: "{{ basesys_group | d({}) | combine({item.name: item}) }}"
+    with_items:
+      - "{{ basesys_groups }}"
+      - "{{ basesys_local_groups | d([]) }}"
+
+  - debug: var=basesys_group
+
+  - name: create groups
+    group:
+      name: "{{ item.name }}"
+      gid: "{{ item.gid | d(omit) }}"
+      state: "{{ item.state | d(omit) }}"
+      system: "{{ item.system | d(omit) }}"
+    with_items: "{{ basesys_groups }}"
+
+  - name: add sudoers
+    lineinfile:
+      dest: "/etc/sudoers"
+      regexp: "^%{{ item.name }} "
+      line: "%{{ item.name }} ALL=(ALL) {% if item.sudo == 'nopasswd' %}NOPASSWD: {% endif %}ALL"
+      create: yes
+      owner: root
+      group: root
+      mode: 0440
+    when:
+      - item.sudo is defined
+      - item.sudo != false
+      - item.sudo != None
+    with_items: "{{ basesys_groups }}"
+
+  when:
+    - basesys_groups != false
+    - basesys_groups != None
+  tags:
+    - basesys
+    - basesys_groups

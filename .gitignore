@@ -1,0 +1,8 @@
+.cache/
+.facsimile/
+.molecule/
+.vault_pass
+BAK*
+gen/
+*.retry
+*.log

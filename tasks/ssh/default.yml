@@ -1,0 +1,42 @@
+
+- block:
+  - name: install packages
+    package: name={{item}} state={{basesys_ssh_package_state}}
+    with_items: "{{basesys_ssh_packages}}"
+    when: basesys_ssh_packages > 0
+
+  - name: enable service
+    service: name={{basesys_ssh_service}}
+             enabled=yes
+             state=started
+    when:
+      - basesys_ssh_service != false
+      - basesys_ssh_service != None
+
+  - name: disable ssh root login
+    lineinfile:
+      dest: /etc/ssh/sshd_config
+      regexp: ^PermitRootLogin
+      line: "PermitRootLogin no"
+    notify: basesys sshd reload
+    when: basesys_ssh_disable_root
+
+  - name: disable ssh password authentication
+    lineinfile:
+      dest: /etc/ssh/sshd_config
+      regexp: ^PasswordAuthentication
+      line: "PasswordAuthentication no"
+    notify: basesys sshd reload
+    when: basesys_ssh_disable_password
+
+  - name: disable protocol version 1
+    lineinfile:
+      dest: /etc/ssh/sshd_config
+      regexp: ^Protocol
+      line: "Protocol 2"
+    notify: basesys sshd reload
+    when: basesys_ssh_disable_v1
+
+  when:
+    - basesys_ssh != false
+    - basesys_ssh != None

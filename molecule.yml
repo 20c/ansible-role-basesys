@@ -1,0 +1,58 @@
+
+ansible:
+  playbook: playbook.yml
+  group_vars:
+    all:
+      - basesys_timezone: UTC
+        basesys_ntp_servers:
+        - 0.pool.ntp.org
+        - 1.pool.ntp.org
+        - 2.pool.ntp.org
+        - 3.pool.ntp.org
+        basesys_ntp_server_options:
+        - iburst
+        basesys_groups:
+          - name: "testplain"
+          - name: "testsudo"
+            system: yes
+            sudo: yes
+          - name: "testsudonp"
+            system: yes
+            sudo: nopasswd
+        basesys_users:
+          - name: testuser
+
+
+driver:
+  name: docker
+
+docker:
+  containers:
+  - name: basesys-centos-7
+    ansible_groups:
+      - rhel
+    image: milcom/centos7-systemd
+    image_version: latest
+    privileged: True
+  - name: basesys-debian-8
+    ansible_groups:
+      - debian
+    image: maint/debian-systemd
+    image_version: latest
+    privileged: True
+# disabled - selinux makes useradd fail
+#  - name: basesys-ubuntu-12.04
+#    ansible_groups:
+#      - ubuntu
+#    image: rastasheep/ubuntu-sshd
+#    image_version: 12.04
+#    privileged: True
+  - name: basesys-ubuntu-16.04
+    ansible_groups:
+      - ubuntu
+    image: ubuntu
+    image_version: 16.04
+    privileged: True
+
+verifier:
+  name: testinfra

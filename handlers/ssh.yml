@@ -1,0 +1,3 @@
+
+- name: basesys sshd reload
+  service: name={{basesys_ssh_service}} state=reloaded

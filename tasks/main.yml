@@ -1,0 +1,31 @@
+
+- block:
+  - name: include system specific variables
+    include_vars: "{{ item }}"
+    with_first_found:
+      - files:
+        - "sys/{{ ansible_system }}.yml"
+        skip: true
+
+  - name: include OS family specific variables
+    include_vars: "{{ item }}"
+    with_first_found:
+      - files:
+        - "sys/{{ ansible_os_family }}.yml"
+        skip: true
+
+  - name: include OS distribution specific variables
+    include_vars: "{{ item }}"
+    with_first_found:
+      - files:
+        - "sys/{{ ansible_distribution }}.yml"
+        skip: true
+
+  tags:
+    - always
+
+- include: timezone.yml
+- include: ntp.yml
+- include: ssh.yml
+- include: groups.yml
+- include: users.yml

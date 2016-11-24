@@ -1,0 +1,18 @@
+
+- block:
+
+  - name: include timezone tasks
+    include: "{{ basesys_timezone_include }}"
+    with_first_found:
+      - "timezone/{{ ansible_os_family }}.yml"
+      - "timezone/{{ ansible_system }}.yml"
+      - "timezone/default.yml"
+    loop_control:
+      loop_var: basesys_timezone_include
+
+  when:
+    - basesys_timezone != false
+    - basesys_timezone != None
+  tags:
+    - basesys
+    - basesys_timezone

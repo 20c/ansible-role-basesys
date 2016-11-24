@@ -1,0 +1,42 @@
+
+- block:
+
+  - name: build user index
+    set_fact:
+      basesys_user: "{{ basesys_user | d({}) | combine({item.name: item}) }}"
+#    debug: var=item
+    with_items:
+      - "{{ basesys_users }}"
+      - "{{ basesys_local_users | d([]) }}"
+
+  - debug: var=basesys_user
+
+  - name: create users
+    user:
+      name: "{{ item.name }}"
+      password: "{{ item.password | d(omit) }}"
+      comment: "{{ item.comment | d(omit) }}"
+      uid: "{{ item.uid | d(omit) }}"
+      home: "{{ item.home | d(omit) }}"
+      group: "{{ item.group | d(omit) }}"
+      groups: "{{ ','.join(item.groups | d([])) }}"
+      shell: "{{ item.shell | d(omit) }}"
+      state: "{{ item.state | d(omit) }}"
+      system: "{{ item.system | d(omit) }}"
+    with_items: "{{ basesys_users }}"
+
+  - name: add authorized_keys
+    authorized_key:
+      user: "{{ item.name }}"
+      key: "{{ item.authorized_key.key | d(omit) }}"
+      key_options: "{{ item.authorized_key.key_options | d(omit) }}"
+      exclusive: yes
+    when: item.authorized_key is defined
+    with_items: "{{ basesys_users }}"
+
+  when:
+    - basesys_users != false
+    - basesys_users != None
+  tags:
+    - basesys
+    - basesys_users
