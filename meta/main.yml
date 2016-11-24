@@ -1,0 +1,22 @@
+galaxy_info:
+  author: Matt Griswold
+  description: An Ansible role for managing base system configuration
+  company: 20C
+  license: Apache
+  min_ansible_version: 1.9
+  platforms:
+  - name: EL
+    versions:
+      - all
+  - name: Fedora
+    versions:
+      - all
+  - name: Ubuntu
+    versions:
+      - all
+  - name: Debian
+    versions:
+      - all
+  categories:
+    - system
+dependencies: []
