@@ -11,6 +11,7 @@ ansible:
         - 3.pool.ntp.org
         basesys_ntp_server_options:
         - iburst
+        basesys_ssh: true
         basesys_groups:
           - name: "testplain"
           - name: "testsudo"

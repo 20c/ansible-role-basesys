@@ -12,8 +12,8 @@ basesys_ntp_config_file: /etc/ntp.conf
 basesys_ntp_server_options: []
 
 
-# set to false to disable ssh management
-basesys_ssh: true
+# set to true to enable ssh management
+basesys_ssh: false
 
 # set to false to not manage ssh packages
 basesys_ssh_manage_package: true
