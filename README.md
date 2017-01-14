@@ -41,12 +41,16 @@ basesys_ssh_disable_v1: true
 
 
 # list of group dicts to add, false to disable group management
+# uses ansible group fields
 #
 # basesys_groups:
 #   - name: "{{ item.name }}"
 #     gid: "{{ item.gid | d(omit) }}"
 #     state: "{{ item.state | d(omit) }}"
 #     system: "{{ item.system | d(omit) }}"
+#
+# Additional options
+#     sudo: # true to add to sudoers file, nopasswd without passwd
 basesys_groups: false
 
 
