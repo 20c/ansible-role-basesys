@@ -6,7 +6,8 @@
       name: "{{ item.name }}"
       state: "{{ basesys_package_state | d('present') }}"
     with_items: "{{ basesys_packages }}"
-    when: basesys_packages > 0
+    when: basesys_packages | length > 0
+
 
   when:
     - basesys_packages != false

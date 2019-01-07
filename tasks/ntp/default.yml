@@ -3,7 +3,7 @@
   - name: install packages
     package: name={{item}} state={{basesys_ntp_package_state}}
     with_items: "{{basesys_ntp_packages}}"
-    when: basesys_ntp_packages > 0
+    when: basesys_ntp_packages | length > 0
 
   - name: enable service
     service: name={{basesys_ntp_service}}

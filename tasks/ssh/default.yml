@@ -3,7 +3,7 @@
   - name: install packages
     package: name={{item}} state={{basesys_ssh_package_state}}
     with_items: "{{basesys_ssh_packages}}"
-    when: basesys_ssh_packages > 0
+    when: basesys_ssh_packages | length > 0
 
   - name: enable service
     service: name={{basesys_ssh_service}}
