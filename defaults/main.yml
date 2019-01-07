@@ -3,13 +3,16 @@
 basesys_timezone: false
 
 
+basesys_packages: false
+
+
 #basesys_ntp_servers: []
 basesys_ntp: "{{ basesys_ntp_servers | d(False) }}"
 basesys_ntp_packages: [ntp]
 basesys_ntp_package_state: latest
 basesys_ntp_service: ntpd
 basesys_ntp_config_file: /etc/ntp.conf
-basesys_ntp_server_options: []
+basesys_ntp_server_options: [iburst]
 
 
 # set to true to enable ssh management
@@ -27,6 +30,16 @@ basesys_ssh_disable_root: true
 basesys_ssh_disable_password: true
 # disable protocol version 1
 basesys_ssh_disable_v1: true
+
+
+# set to true to enable ssh management
+basesys_snmp: false
+
+# set to false to not manage ssh packages
+basesys_snmp_manage_package: true
+basesys_snmp_packages: [snmpd]
+basesys_snmp_package_state: latest
+basesys_snmp_service: snmpd
 
 
 # list of group dicts to add, false to disable group management

@@ -1,0 +1,16 @@
+
+- block:
+
+  - name: install packages
+    package:
+      name: "{{ item.name }}"
+      state: "{{ basesys_package_state | d('present') }}"
+    with_items: "{{ basesys_packages }}"
+    when: basesys_packages > 0
+
+  when:
+    - basesys_packages != false
+    - basesys_packages != None
+  tags:
+    - basesys
+    - basesys_packages

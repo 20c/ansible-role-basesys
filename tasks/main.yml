@@ -24,6 +24,7 @@
   tags:
     - always
 
+- include: packages.yml
 - include: timezone.yml
 - include: ntp.yml
 - include: ssh.yml
