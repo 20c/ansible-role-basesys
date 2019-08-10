@@ -16,24 +16,30 @@
   - name: disable ssh root login
     lineinfile:
       dest: /etc/ssh/sshd_config
-      regexp: ^PermitRootLogin
+      regexp: '^[#\s]*PermitRootLogin '
       line: "PermitRootLogin no"
+      insertafter: '^[#\s]*Authentication:'
+      validate: "sshd -tf %s"
     notify: basesys sshd reload
     when: basesys_ssh_disable_root
 
   - name: disable ssh password authentication
     lineinfile:
       dest: /etc/ssh/sshd_config
-      regexp: ^PasswordAuthentication
+      regexp: '^[#\s]*PasswordAuthentication '
       line: "PasswordAuthentication no"
+      insertafter: '^[#\s]*Authentication:'
+      validate: "sshd -tf %s"
     notify: basesys sshd reload
     when: basesys_ssh_disable_password
 
   - name: disable protocol version 1
     lineinfile:
       dest: /etc/ssh/sshd_config
-      regexp: ^Protocol
+      regexp: '^[#\s]*Protocol '
       line: "Protocol 2"
+      insertbefore: '^[#\s]*Port'
+      validate: "sshd -tf %s"
     notify: basesys sshd reload
     when: basesys_ssh_disable_v1
 
