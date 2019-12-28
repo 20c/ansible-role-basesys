@@ -4,6 +4,7 @@
   - name: include ntp tasks
     include: "{{ basesys_ntp_include }}"
     with_first_found:
+      - "ntp/{{ ansible_os_family }}-{{ ansible_distribution_major_version }}.yml"
       - "ntp/{{ ansible_os_family }}.yml"
       - "ntp/{{ ansible_system }}.yml"
       - "ntp/default.yml"
