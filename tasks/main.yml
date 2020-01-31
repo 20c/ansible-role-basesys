@@ -4,28 +4,28 @@
     include_vars: "{{ item }}"
     with_first_found:
       - files:
-        - "sys/{{ ansible_system }}.yml"
+        - "basesys/{{ ansible_system }}.yml"
         skip: true
 
   - name: include OS family version specific variables
     include_vars: "{{ item }}"
     with_first_found:
       - files:
-        - "sys/{{ ansible_os_family }}-{{ ansible_distribution_major_version }}.yml"
+        - "basesys/{{ ansible_os_family }}-{{ ansible_distribution_major_version }}.yml"
         skip: true
 
   - name: include OS family specific variables
     include_vars: "{{ item }}"
     with_first_found:
       - files:
-        - "sys/{{ ansible_os_family }}.yml"
+        - "basesys/{{ ansible_os_family }}.yml"
         skip: true
 
   - name: include OS distribution specific variables
     include_vars: "{{ item }}"
     with_first_found:
       - files:
-        - "sys/{{ ansible_distribution }}.yml"
+        - "basesys/{{ ansible_distribution }}.yml"
         skip: true
 
   tags:
