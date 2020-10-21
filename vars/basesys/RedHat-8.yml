@@ -1,0 +1,3 @@
+basesys_ntp_packages: [chrony]
+basesys_ntp_service: chronyd
+basesys_ntp_config_file: /etc/chrony.conf
