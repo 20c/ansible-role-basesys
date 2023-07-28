@@ -19,19 +19,28 @@
     with_items: "{{ basesys_groups }}"
 
   - name: add sudoers
-    lineinfile:
-      dest: "/etc/sudoers"
-      regexp: "^%{{ item.name }} "
-      line: "%{{ item.name }} ALL=(ALL) {% if item.sudo == 'nopasswd' %}NOPASSWD: {% endif %}ALL"
-      create: yes
-      owner: root
-      group: root
+    ansible.builtin.template:
+      src: "templates/sudoers.j2"
+      dest: "{{ basesys_sudoers_d }}/{{ item.name }}"
       mode: 0440
     when:
+      - ansible_become_method == "sudo"
       - item.sudo is defined
       - item.sudo != false
-      - item.sudo != None
-    with_items: "{{ basesys_groups }}"
+      - item.sudo != None 
+    loop: "{{ basesys_groups }}"
+  
+  - name: add doas conf
+    ansible.builtin.template:
+      src: "templates/doas.conf.j2"
+      dest: "{{ basesys_doas_conf }}"
+      mode: 0440
+    when:
+      - ansible_become_method == "doas"
+      - item.sudo is defined
+      - item.sudo != false
+      - item.sudo != None 
+    loop: "{{ basesys_groups }}"
 
   when:
     - basesys_groups != false
