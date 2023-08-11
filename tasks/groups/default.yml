@@ -24,7 +24,6 @@
       dest: "{{ basesys_sudoers_d }}/{{ item.name }}"
       mode: 0440
     when:
-      - ansible_become_method == "sudo"
       - item.sudo is defined
       - item.sudo != false
       - item.sudo != None 
@@ -36,7 +35,7 @@
       dest: "{{ basesys_doas_conf }}"
       mode: 0440
     when:
-      - ansible_become_method == "doas"
+      - ansible_become_method is defined and ansible_become_method == "doas"
       - item.sudo is defined
       - item.sudo != false
       - item.sudo != None 
