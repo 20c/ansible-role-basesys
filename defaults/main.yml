@@ -24,6 +24,9 @@ basesys_ssh_packages: [openssh-server]
 basesys_ssh_package_state: latest
 basesys_ssh_service: sshd
 
+basesys_sudoers_d: /etc/sudoers.d
+basesys_doas_conf: /etc/doas.conf
+
 # disable root login
 basesys_ssh_disable_root: true
 # disable password login
