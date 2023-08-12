@@ -18,24 +18,25 @@
       system: "{{ item.system | d(omit) }}"
     with_items: "{{ basesys_groups }}"
 
-  - name: add sudoers
+  - name: add sudoers template
     ansible.builtin.template:
       src: "templates/sudoers.j2"
       dest: "{{ basesys_sudoers_d }}/{{ item.name }}"
       mode: 0440
     when:
+      - sudo_as_doas is defined and sudo_as_doas == false or sudo_as_doas is not defined
       - item.sudo is defined
       - item.sudo != false
       - item.sudo != None 
     loop: "{{ basesys_groups }}"
   
-  - name: add doas conf
+  - name: add doas template
     ansible.builtin.template:
       src: "templates/doas.conf.j2"
       dest: "{{ basesys_doas_conf }}"
       mode: 0440
     when:
-      - ansible_become_method is defined and ansible_become_method == "doas"
+      - sudo_as_doas is defined and sudo_as_doas != false
       - item.sudo is defined
       - item.sudo != false
       - item.sudo != None 
