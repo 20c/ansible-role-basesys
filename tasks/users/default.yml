@@ -28,10 +28,10 @@
   - name: add authorized_keys
     authorized_key:
       user: "{{ item.name }}"
-      key: "{{ item.authorized_key.key | d(omit) }}"
+      key: "{{ item.authorized_key.key | d(lookup('file', 'files/keys/' + item.name + '/main.pub')) }}"
       key_options: "{{ item.authorized_key.key_options | d(omit) }}"
       exclusive: yes
-    when: item.authorized_key is defined
+    when: item.name is defined and (lookup('file', 'files/keys/' + item.name + '/main.pub', errors='ignore') is not none)
     with_items: "{{ basesys_users }}"
 
   when:
