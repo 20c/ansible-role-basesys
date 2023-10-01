@@ -2,7 +2,6 @@
 # set to a valid timezone to use
 basesys_timezone: false
 
-
 basesys_packages: false
 
 
@@ -14,6 +13,12 @@ basesys_ntp_service: ntpd
 basesys_ntp_config_file: /etc/ntp.conf
 basesys_ntp_server_options: [iburst]
 
+basesys_sudoers_d: /etc/sudoers.d
+basesys_doas_conf: /etc/doas.conf
+
+# default values
+basesys_user_state: present
+
 
 # set to true to enable ssh management
 basesys_ssh: false
@@ -23,9 +28,6 @@ basesys_ssh_manage_package: true
 basesys_ssh_packages: [openssh-server]
 basesys_ssh_package_state: latest
 basesys_ssh_service: sshd
-
-basesys_sudoers_d: /etc/sudoers.d
-basesys_doas_conf: /etc/doas.conf
 
 # disable root login
 basesys_ssh_disable_root: true
