@@ -21,17 +21,19 @@
       group: "{{ item.group | d(omit) }}"
       groups: "{{ ','.join(item.groups | d([])) }}"
       shell: "{{ item.shell | d(omit) }}"
-      state: "{{ item.state | d(omit) }}"
+      state: "{{ item.state | d(basesys_user_state) }}"
       system: "{{ item.system | d(omit) }}"
     with_items: "{{ basesys_users }}"
 
   - name: add authorized_keys
     authorized_key:
       user: "{{ item.name }}"
-      key: "{{ item.authorized_key.key | d(omit) }}"
+      key: "{{ item.authorized_key.key if item.authorized_key.key is defined else lookup('file', 'files/keys/' + item.name + '/main.pub') }}"
       key_options: "{{ item.authorized_key.key_options | d(omit) }}"
       exclusive: yes
-    when: item.authorized_key is defined
+    when:
+      - (item.state is not defined or item.state != "absent") and (basesys_user_state != "absent")
+      - (item.authorized_key.key is defined) or (item.name is defined and (lookup('file', 'files/keys/' + item.name + '/main.pub', errors='ignore') is not none))
     with_items: "{{ basesys_users }}"
 
   when:
