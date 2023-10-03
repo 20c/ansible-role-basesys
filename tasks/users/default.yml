@@ -32,7 +32,7 @@
       key_options: "{{ item.authorized_key.key_options | d(omit) }}"
       exclusive: yes
     when:
-      - (item.state is defined and item.state != "absent") or (basesys_user_state != "absent")
+      - (item.state is not defined or item.state != "absent") and (basesys_user_state != "absent")
       - (item.authorized_key.key is defined) or (item.name is defined and (lookup('file', 'files/keys/' + item.name + '/main.pub', errors='ignore') is not none))
     with_items: "{{ basesys_users }}"
 
