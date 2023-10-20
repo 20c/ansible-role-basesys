@@ -37,3 +37,4 @@
 - include: ssh.yml
 - include: groups.yml
 - include: users.yml
+- include: disk.yml

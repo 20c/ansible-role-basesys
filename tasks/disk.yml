@@ -1,0 +1,38 @@
+
+- block:
+
+#  - name: Optimize disk schedulers for VMs
+#    hosts: all:!metal:!outofband
+  - name: Add disk schedulers to rc.local
+    ansible.builtin.lineinfile:
+      dest: "{{ rc_local_file }}"
+      line: "for scheduler in /sys/class/block/[sv]d*/queue/scheduler ; do echo none > $scheduler ; done"
+    when:
+      - rc_local_file is defined
+      - ansible_os_family == "RedHat"
+
+  - name: Change permissions on rc.local
+    ansible.builtin.file:
+      dest: "{{ rc_local_file }}"
+      mode: "a+x"
+    when:
+        - rc_local_file is defined
+        - ansible_os_family == "RedHat"
+
+  - name: Template rc.local
+    ansible.builtin.template:
+      src: "templates/debian/rc.local.j2"
+      dest: "{{ rc_local_file }}"
+      mode: "0755"
+    when:
+      - rc_local_file is defined
+      - ansible_os_family == "Debian"
+    
+  - name: Toggle rc-local service
+    ansible.builtin.systemd:
+      name: rc-local
+      state: started
+      enabled: true
+    when:
+      - rc_local_file is defined
+      - "'metal' not in inventory_hostname and 'outofband' not in inventory_hostname"
