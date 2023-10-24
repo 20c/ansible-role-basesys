@@ -31,10 +31,12 @@
   tags:
     - always
 
-- include: packages.yml
-- include: timezone.yml
-- include: ntp.yml
-- include: ssh.yml
-- include: groups.yml
-- include: users.yml
-- include: disk.yml
+- include_tasks: proxy.yml
+- include_tasks: packages.yml
+- include_tasks: timezone.yml
+- include_tasks: ntp.yml
+- include_tasks: ssh.yml
+- include_tasks: groups.yml
+- include_tasks: users.yml
+- include_tasks: guest.yml
+- include_tasks: disk.yml

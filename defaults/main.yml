@@ -18,6 +18,18 @@ basesys_ntp_server_options: [iburst]
 # set to true to enable ssh management
 basesys_ssh: false
 
+# set to true to enable guest related tasks
+basesys_guest: false
+
+# set to true to enable http proxy
+basesys_proxy: false
+
+# set to true to change disk io schedulers, default to none for guests
+basesys_disk: false
+basesys_disk_io: none
+
+basesys_rc_local: /etc/rc.local
+
 # set to false to not manage ssh packages
 basesys_ssh_manage_package: true
 basesys_ssh_packages: [openssh-server]
