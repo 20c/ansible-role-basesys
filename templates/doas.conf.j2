@@ -1,3 +1,5 @@
 {% for group in unix_groups %}
-permit {% if group.sudo is defined and group.sudo == 'nopasswd' %}nopass {% endif %}persist setenv { -ENV PS1=$DOAS_PS1 SSH_AUTH_SOCK } :{{ group.name }}
+{% if group.sudo is defined %}
+permit {% if group.sudo == 'nopasswd' %}nopass{% else %}persist{% endif %} setenv { -ENV PS1=$DOAS_PS1 SSH_AUTH_SOCK } :{{ group.name }}
+{% endif %}
 {% endfor %}
