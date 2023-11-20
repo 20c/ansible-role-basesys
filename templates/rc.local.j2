@@ -1,0 +1,3 @@
+#!/bin/bash
+
+for scheduler in /sys/class/block/[sv]d*/queue/scheduler ; do echo {{ basesys_disk_io }} > $scheduler ; done

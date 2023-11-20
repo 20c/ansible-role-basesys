@@ -1,0 +1,41 @@
+
+- block:
+
+    - name: Add http proxies to environment
+      ansible.builtin.blockinfile:
+        path: /etc/environment
+        marker: "### {mark} ANSIBLE MANAGED ###"
+        block: |
+          http_proxy="{{ http_proxy }}"
+          https_proxy="{{ https_proxy }}"
+          ftp_proxy="{{ ftp_proxy }}"
+          no_proxy="{{ no_proxy }}"
+
+    - name: Add yum proxy to environment
+      ansible.builtin.blockinfile:
+        path: /etc/yum.conf
+        marker: "### {mark} ANSIBLE MANAGED ###"
+        block: |
+          proxy = {{ yum_proxy }}
+          ip_resolve = 4
+      when:
+        - ansible_os_family == "RedHat"
+        # - basesys_proxy_yum != false
+        # - basesys_proxy_yum != None
+
+    - name: Template apt proxy
+      ansible.builtin.template:
+        src: "templates/apt-proxy.conf.j2"
+        dest: "/etc/apt/apt.conf.d/80proxy.conf"
+      when:
+        - ansible_os_family == "Debian"
+        # - basesys_proxy_apt != false
+        # - basesys_proxy_apt != None
+
+  when:
+    - http_proxy is defined
+    - basesys_proxy != false
+    - basesys_proxy != None
+  tags:
+    - basesys
+    - basesys_proxy

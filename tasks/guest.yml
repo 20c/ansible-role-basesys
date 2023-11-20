@@ -1,0 +1,17 @@
+
+- block:
+    
+    - name: Toggle guest agent service
+      ansible.builtin.systemd:
+        name: qemu-guest-agent
+        state: started
+        enabled: true
+      when:
+        - ansible_os_family == "Debian"
+  
+  when:
+    - basesys_guest != false
+    - basesys_guest != None
+  tags:
+    - basesys
+    - basesys_guest

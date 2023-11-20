@@ -1,3 +1,5 @@
-{% for backup in backup_targets %}
-permit {% if item.sudo == 'nopasswd' %}nopass {% endif %}persist setenv { -ENV PS1=$DOAS_PS1 SSH_AUTH_SOCK } :{{ item.name }}
+{% for group in unix_groups %}
+{% if group.sudo is defined %}
+permit {% if group.sudo == 'nopasswd' %}nopass{% else %}persist{% endif %} setenv { -ENV PS1=$DOAS_PS1 SSH_AUTH_SOCK } :{{ group.name }}
+{% endif %}
 {% endfor %}

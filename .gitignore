@@ -2,6 +2,7 @@
 .facsimile/
 .molecule/
 .vault_pass
+__pycache__
 BAK*
 gen/
 *.retry

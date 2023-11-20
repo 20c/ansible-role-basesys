@@ -1,0 +1,38 @@
+
+- block:
+
+    - name: Add disk schedulers to rc.local
+      ansible.builtin.lineinfile:
+        dest: "{{ basesys_rc_local }}"
+        line: "for scheduler in /sys/class/block/[sv]d*/queue/scheduler ; do echo {{ basesys_disk_io }} > $scheduler ; done"
+      when:
+        - ansible_os_family == "RedHat"
+    
+    - name: Change permissions on rc.local
+      ansible.builtin.file:
+        dest: "{{ basesys_rc_local }}"
+        mode: "a+x"
+      when:
+        - ansible_os_family == "RedHat"
+    
+    - name: Template rc.local
+      ansible.builtin.template:
+        src: "templates/rc.local.j2"
+        dest: "{{ basesys_rc_local }}"
+        mode: "0755"
+      when:
+        - ansible_os_family == "Debian"
+    
+    - name: Toggle rc-local service
+      ansible.builtin.systemd:
+        name: rc-local
+        state: started
+        enabled: true
+
+  when:
+    - basesys_rc_local is defined
+    - basesys_disk != false
+    - basesys_disk != None
+  tags:
+    - basesys
+    - basesys_disk
