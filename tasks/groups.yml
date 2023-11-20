@@ -2,7 +2,7 @@
 - block:
 
   - name: include groups tasks
-    include: "{{ basesys_groups_include }}"
+    include_tasks: "{{ basesys_groups_include }}"
     with_first_found:
       - "groups/{{ ansible_os_family }}.yml"
       - "groups/{{ ansible_system }}.yml"

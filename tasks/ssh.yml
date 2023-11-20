@@ -2,7 +2,7 @@
 - block:
 
   - name: include ssh tasks
-    include: "{{ basesys_ssh_include }}"
+    include_tasks: "{{ basesys_ssh_include }}"
     with_first_found:
       - "ssh/{{ ansible_os_family }}.yml"
       - "ssh/{{ ansible_system }}.yml"

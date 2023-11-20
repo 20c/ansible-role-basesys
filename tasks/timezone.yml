@@ -2,7 +2,7 @@
 - block:
 
   - name: include timezone tasks
-    include: "{{ basesys_timezone_include }}"
+    include_tasks: "{{ basesys_timezone_include }}"
     with_first_found:
       - "timezone/{{ ansible_os_family }}.yml"
       - "timezone/{{ ansible_system }}.yml"
