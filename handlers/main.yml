@@ -1,3 +1,17 @@
 
-- include_tasks: ntp.yml
-- include_tasks: ssh.yml
+
+- name: basesys ntp reload
+  service: name={{basesys_sshd_service}} state=reloaded
+
+- name: basesys set current time
+  command: ntpdate -u {{ item }}
+  register: ntpdate_result
+  # ignore if it's not installed, iburst should handle setting at the start
+  failed_when:
+    - ntpdate_result.rc != 0
+    - "'No such file or directory' not in ntpdate_result.msg | d('')"
+  with_items:
+    - "{{basesys_ntp_servers}}"
+
+- name: basesys sshd reload
+  service: name={{basesys_ssh_service}} state=reloaded
